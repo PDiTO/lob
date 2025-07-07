@@ -1,0 +1,28 @@
+# Rust
+/target/
+**/*.rs.bk
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Generated feeds and reports
+/out/
+*.feed.csv
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

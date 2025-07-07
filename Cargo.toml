@@ -1,0 +1,27 @@
+[workspace]
+resolver = "3"
+members = ["crates/lob"]
+# The Python extension only links properly when built through maturin, so plain
+# `cargo build` / `cargo test` skip it. Clippy covers it with `--workspace`.
+default-members = ["crates/lob"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+license = "MIT"
+authors = ["Paul Davis"]
+
+[workspace.dependencies]
+lob = { path = "crates/lob" }
+
+# Property tests run thousands of cases; optimizing dependencies (proptest, the
+# hasher) keeps `cargo test` quick while our own code keeps debug assertions.
+[profile.dev.package."*"]
+opt-level = 2
+
+[profile.release]
+debug = 1
+
+[profile.bench]
+debug = 1
