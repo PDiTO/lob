@@ -19,6 +19,7 @@
 
 pub mod book;
 pub mod market_data;
+pub mod reference;
 pub mod types;
 
 pub use book::{BookConfig, LevelInfo, OrderBook, Placement, RestingOrder, StpMode};
