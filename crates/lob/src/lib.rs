@@ -18,8 +18,11 @@
 //! ```
 
 pub mod book;
+pub mod feed;
 pub mod market_data;
 pub mod reference;
+pub mod rng;
+pub mod synthetic;
 pub mod types;
 
 pub use book::{BookConfig, LevelInfo, OrderBook, Placement, RestingOrder, StpMode};
