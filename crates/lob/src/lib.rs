@@ -17,6 +17,7 @@
 //! assert_eq!(book.best_ask().unwrap().qty, 2);
 //! ```
 
+pub mod backtest;
 pub mod book;
 pub mod feed;
 pub mod market_data;
