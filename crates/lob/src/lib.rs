@@ -19,10 +19,12 @@
 
 pub mod backtest;
 pub mod book;
+pub mod config;
 pub mod feed;
 pub mod market_data;
 pub mod reference;
 pub mod rng;
+pub mod strategies;
 pub mod synthetic;
 pub mod types;
 
