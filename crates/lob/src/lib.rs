@@ -27,6 +27,7 @@ pub mod rng;
 pub mod strategies;
 pub mod synthetic;
 pub mod types;
+pub mod workload;
 
 pub use book::{BookConfig, LevelInfo, OrderBook, Placement, RestingOrder, StpMode};
 pub use market_data::{DepthView, L2Book, L2Snapshot, L3Snapshot, TopOfBook};
