@@ -1,0 +1,20 @@
+# Naive momentum taker on the same synthetic market as market_maker.toml.
+# Run: lob backtest --config configs/momentum.toml
+
+[market]
+seed = 1
+duration_s = 600
+
+[sim]
+order_latency_ns = 50_000
+market_data_latency_ns = 50_000
+taker_fee = 0.3
+timer_interval_ns = 100_000_000
+
+[strategy]
+type = "momentum"
+lookback = 20             # timer ticks (100 ms each here), so 2 seconds
+threshold = 3.0           # ticks of mid move over the lookback
+trade_qty = 5
+max_position = 20
+max_slippage = 1

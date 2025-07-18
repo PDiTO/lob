@@ -1,0 +1,38 @@
+# Symmetric market maker on a synthetic random-walk market.
+# Run: lob backtest --config configs/market_maker.toml
+
+[market]
+seed = 1
+duration_s = 600
+initial_price = 10_000
+fair_value = "random_walk"
+volatility = 2.0          # ticks per sqrt(second)
+limit_rate = 80.0         # limit orders per second
+market_rate = 10.0        # market orders per second
+cancel_rate = 0.25        # per resting order per second
+mean_offset = 5.0         # mean distance of new limit orders from fair, ticks
+max_qty = 10
+max_market_qty = 12
+informed = 0.5            # share of market orders that trade toward fair value
+participants = 500
+initial_levels = 10
+
+[sim]
+order_latency_ns = 50_000
+market_data_latency_ns = 50_000
+queue_position = "back"   # "front" is an optimistic bound, not a real venue
+stp = "cancel_resting"
+maker_fee = -0.1          # ticks per lot; negative is a rebate
+taker_fee = 0.3
+timer_interval_ns = 100_000_000
+sample_interval_ns = 1_000_000_000
+markout_horizons_ns = [100_000_000, 1_000_000_000, 10_000_000_000]
+
+[strategy]
+type = "market_maker"
+half_spread = 0.5         # ticks from the skewed reference; 0.5 joins the touch
+quote_qty = 5
+max_position = 50
+skew_per_lot = 0.05       # reference shift in ticks per lot of inventory
+requote_threshold = 1
+reference = "mid"         # or "microprice"

@@ -1,0 +1,13 @@
+# Replays a recorded order-by-order feed instead of generating one.
+# data/sample_feed.csv is 20 seconds of synthetic flow written by
+#   lob generate --seed 42 --duration 20 --out data/sample_feed.csv
+# Swap in your own CSV with the same columns to backtest on real L3 data.
+
+feed_csv = "../data/sample_feed.csv"
+
+[sim]
+order_latency_ns = 50_000
+market_data_latency_ns = 50_000
+
+[strategy]
+type = "market_maker"
