@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    name: Rust (fmt, clippy, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+
+      - name: rustfmt
+        run: cargo fmt --all --check
+
+      # Covers the Python binding crate too; PyO3 only needs a python3 on PATH to
+      # type-check, which ubuntu-latest has.
+      - name: clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      # Unit, property, differential, backtester and CLI tests.
+      - name: test
+        run: cargo test
+
+      - name: benchmarks compile
+        run: cargo bench -p lob --no-run
+
+  python:
+    name: Python (wheel, ruff, pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - uses: astral-sh/setup-uv@v6
+
+      - name: install dev dependencies
+        run: uv sync --locked
+
+      - name: ruff
+        run: |
+          uv run ruff check .
+          uv run ruff format --check .
+
+      - name: build wheel
+        run: uv run maturin build --release --out dist
+
+      - name: install extension
+        run: uv run maturin develop --uv --release
+
+      - name: pytest
+        run: uv run pytest
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wheel
+          path: dist/*.whl
