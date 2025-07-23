@@ -147,6 +147,14 @@ pub struct Ctx {
     pub(crate) stopped: bool,
 }
 
+impl Default for Ctx {
+    /// A context not attached to any simulation. Actions queued on it go nowhere;
+    /// handy for unit-testing a strategy's decisions in isolation.
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Ctx {
     pub(crate) fn new() -> Self {
         Self {

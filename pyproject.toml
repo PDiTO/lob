@@ -1,0 +1,53 @@
+[build-system]
+requires = ["maturin>=1.9,<2"]
+build-backend = "maturin"
+
+[project]
+name = "lob"
+version = "0.1.0"
+description = "Limit order book matching engine and event-driven backtester, written in Rust"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+authors = [{ name = "Paul Davis" }]
+keywords = ["orderbook", "matching-engine", "backtesting", "market-making", "rust"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Rust",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Typing :: Typed",
+]
+
+[dependency-groups]
+dev = [
+    "maturin>=1.9,<2",
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.maturin]
+manifest-path = "crates/lob-python/Cargo.toml"
+python-source = "python"
+module-name = "lob._lob"
+
+[tool.uv]
+# Keep dependency resolution within the original development period.
+exclude-newer = "2025-07-07T00:00:00Z"
+# The extension is built and installed with `uv run maturin develop --uv`, so uv only
+# manages the dev dependencies here.
+package = false
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["lob"]

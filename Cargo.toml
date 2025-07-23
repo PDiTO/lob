@@ -1,9 +1,9 @@
 [workspace]
 resolver = "3"
-members = ["crates/lob", "crates/lob-cli"]
+members = ["crates/lob", "crates/lob-cli", "crates/lob-python"]
 # The Python extension only links properly when built through maturin, so plain
 # `cargo build` / `cargo test` skip it. Clippy covers it with `--workspace`.
-default-members = ["crates/lob", "crates/lob-cli"]
+default-members = ["crates/lob", "crates/lob-cli", "crates/lob-python"]
 
 [workspace.package]
 version = "0.1.0"
