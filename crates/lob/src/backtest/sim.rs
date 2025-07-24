@@ -141,6 +141,21 @@ struct Counters {
     max_abs_position: i64,
 }
 
+/// Owner id given to feed orders that arrive with the strategy's owner id, so a
+/// recorded feed can never be mistaken for the strategy's own flow or trip
+/// self-trade prevention against it.
+pub const FEED_OWNER_REMAP: u32 = u32::MAX;
+
+fn feed_command(cmd: Command) -> Command {
+    match cmd {
+        Command::New(o) if o.owner == STRATEGY_OWNER => Command::New(NewOrder {
+            owner: FEED_OWNER_REMAP,
+            ..o
+        }),
+        other => other,
+    }
+}
+
 /// Runs a backtest: replays `feed` into a fresh book alongside `strategy`.
 pub fn run<S, I>(feed: I, strategy: &mut S, cfg: &SimConfig) -> BacktestResult
 where
@@ -241,7 +256,7 @@ impl<'a, S: Strategy + ?Sized, I: Iterator<Item = FeedEvent>> Sim<'a, S, I> {
                 self.advance(e.ts);
                 last_feed_ts = e.ts;
                 self.counters.feed_events += 1;
-                self.exchange(e.cmd, false);
+                self.exchange(feed_command(e.cmd), false);
             } else {
                 let Reverse(s) = self.queue.pop().expect("peeked");
                 self.advance(s.ts);

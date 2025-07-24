@@ -24,7 +24,7 @@ mod strategy;
 
 pub use accounting::{Accounting, Liquidity, MONEY_SCALE};
 pub use metrics::{FillRecord, Markout, Sample, Summary};
-pub use sim::{BacktestResult, SimConfig, run};
+pub use sim::{BacktestResult, FEED_OWNER_REMAP, SimConfig, run};
 pub use strategy::{
     Ctx, Fill, Idle, OpenOrder, OrderUpdate, Pending, PublicTrade, STRATEGY_ID_BASE, Strategy,
 };

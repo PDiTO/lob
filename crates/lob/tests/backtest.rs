@@ -161,6 +161,23 @@ fn feed_wins_ties_with_strategy_orders() {
     );
 }
 
+#[test]
+fn feed_orders_with_the_strategy_owner_id_are_not_ours() {
+    // Owner 0 is the strategy's. A recorded feed that happens to use it must not
+    // have its fills booked to us or trigger self-trade prevention.
+    let feed = vec![
+        at(0, Command::New(NewOrder::limit(1, 0, Side::Ask, 101, 5))),
+        at(0, Command::New(NewOrder::limit(2, 0, Side::Bid, 99, 5))),
+        at(20 * MS, market(3, Side::Ask, 2)),
+        at(50 * MS, limit(4, Side::Bid, 90, 1)),
+    ];
+    let mut s = Script::sending(&[(Side::Bid, OrderType::Ioc, 101, 2)]);
+    let r = backtest::run(feed, &mut s, &sim(MS, 0));
+    assert_eq!(s.filled(), 2);
+    assert_eq!(r.summary.fills, 1);
+    assert_eq!(r.summary.final_position, 2);
+}
+
 // ---------------------------------------------------------------------------------
 // Queue position
 // ---------------------------------------------------------------------------------
