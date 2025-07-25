@@ -17,6 +17,11 @@
 //! assert_eq!(book.best_ask().unwrap().qty, 2);
 //! ```
 
+// Compile and run the Rust examples in the README as doctests.
+#[cfg(doctest)]
+#[doc = include_str!("../../../README.md")]
+struct ReadmeDoctests;
+
 pub mod backtest;
 pub mod book;
 pub mod config;
