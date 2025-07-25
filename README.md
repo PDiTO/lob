@@ -1,4 +1,6 @@
-<!-- logo -->
+<p align="center">
+  <img src="docs/logo.png" alt="lob logo" width="200">
+</p>
 
 # lob
 
